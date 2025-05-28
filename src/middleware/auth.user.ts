@@ -19,23 +19,29 @@ export const userAuth = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Unauthorized user" });
+      res.status(401).json({ message: "Unauthorized user" });
+      return;
     }
 
-    const token = authHeader.split(" ")[1]; // Extract token after 'Bearer'
+    const token: string = authHeader.split(" ")[1]; // Extract token after 'Bearer'
 
-    const decoded = jwt.verify(token, process.env.JWT_KEY as string);
+    const decoded: string | JwtPayload = jwt.verify(
+      token,
+      process.env.JWT_KEY as string
+    );
 
     if (typeof decoded === "string") {
       // If decoded is a string, reject because we expect an object payload
-      return res.status(401).json({ message: "Invalid token payload" });
+      res.status(401).json({ message: "Invalid token payload" });
+      return;
     }
 
     // Now decoded is JwtPayload (object), but we need to assert it matches TokenPayload
     const userData = decoded as TokenPayload;
 
     if (!userData.userId || !userData.email) {
-      return res.status(401).json({ message: "Invalid token payload data" });
+      res.status(401).json({ message: "Invalid token payload data" });
+      return;
     }
 
     req.userData = userData;
@@ -43,13 +49,15 @@ export const userAuth = (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     if (error instanceof Error) {
       console.error("JWT auth error:", error.message);
-      return res
+      res
         .status(401)
         .json({ message: "Authentication failed", error: error.message });
+      return;
     }
 
-    return res
+    res
       .status(401)
       .json({ message: "Authentication failed", error: "Unknown error" });
+    return;
   }
 };
