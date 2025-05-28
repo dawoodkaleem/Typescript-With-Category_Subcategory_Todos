@@ -1,5 +1,3 @@
-// controllers/subcategory.controller.ts
-
 import { Request, Response } from "express";
 import {
   createSubcategoryService,
@@ -9,7 +7,10 @@ import {
   deleteSubcategoryService,
 } from "../services/subcategory.services";
 
-export const createSubcategory = async (req: Request, res: Response) => {
+export const createSubcategory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { name, categoryId } = req.body;
 
   if (!name || name.trim() === "") {
@@ -31,7 +32,10 @@ export const createSubcategory = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllSubcategory = async (_req: Request, res: Response) => {
+export const getAllSubcategory = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const subcategories = await getAllSubcategoriesService();
     res.status(200).json(subcategories);
@@ -79,7 +83,10 @@ export const updateSubcategory = async (
   }
 };
 
-export const deleteSubcategory = async (req: Request, res: Response) => {
+export const deleteSubcategory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const deleted = await deleteSubcategoryService(req.params.id);
     if (!deleted) {
