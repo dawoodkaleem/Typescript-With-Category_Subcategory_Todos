@@ -6,6 +6,7 @@ import subcategoryRouter from "./routes/subcategory.router";
 import morgan from "morgan";
 import TodosRouter from "./routes/todos.router";
 import userRoute from "./routes/user.router.js";
+import hubspotRoute from "./routes/hubspot.router.js";
 dotenv.config();
 
 const app = express();
@@ -17,6 +18,7 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/subcategory", subcategoryRouter);
 app.use("/api/todos", TodosRouter);
 app.use("/api/user", userRoute);
+app.use("/", hubspotRoute);
 
 connectDB();
 
