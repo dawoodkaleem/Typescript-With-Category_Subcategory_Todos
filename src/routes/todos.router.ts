@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import TodosModel from "../model/todos.model";
+import { userAuth } from "../middleware/auth.user";
 import {
   createTodos,
   deleteTodos,
@@ -10,13 +10,13 @@ import {
 
 const router = express.Router();
 
-router.post("/", createTodos);
+router.post("/", userAuth, createTodos);
 
-router.get("/", getallTodos);
+router.get("/", userAuth, getallTodos);
 
-router.get("/:id", getSingleTodos);
-router.put("/:id", updateTodos);
+router.get("/:id", userAuth, getSingleTodos);
+router.put("/:id", userAuth, updateTodos);
 
-router.delete("/:id", deleteTodos);
+router.delete("/:id", userAuth, deleteTodos);
 
 export default router;

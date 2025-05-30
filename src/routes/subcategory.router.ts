@@ -1,4 +1,5 @@
 import express from "express";
+import { userAuth } from "../middleware/auth.user";
 import {
   createSubcategory,
   getAllSubcategory,
@@ -9,12 +10,12 @@ import {
 
 const router = express.Router();
 
-router.post("/", createSubcategory);
+router.post("/", userAuth, createSubcategory);
 
-router.get("/", getAllSubcategory);
+router.get("/", userAuth, getAllSubcategory);
 router.get("/:id", getSingleSubcategory);
 
-router.put("/:id", updateSubcategory);
-router.delete("/:id", deleteSubcategory);
+router.put("/:id", userAuth, updateSubcategory);
+router.delete("/:id", userAuth, deleteSubcategory);
 
 export default router;
