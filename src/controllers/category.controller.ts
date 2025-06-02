@@ -8,6 +8,7 @@ import {
   updateCategoryService,
   deleteCategoryService,
 } from "../services/category.services";
+import { ICategory } from "../model/category.model";
 
 export const createCategory = async (
   req: Request,
@@ -16,12 +17,13 @@ export const createCategory = async (
   const { name } = req.body;
 
   if (!name || typeof name !== "string" || name.trim() === "") {
-    res.status(400).json({ message: "Invalid or missing 'name' field" });
-    return;
+    res.status(400).json({
+      message: "Invalid or missing 'name' field",
+    });
   }
 
   try {
-    const newCategory = await createCategoryService(name);
+    const newCategory: ICategory | Error = await createCategoryService(name);
     res.status(201).json(newCategory);
   } catch (err: any) {
     if (err.message === "DUPLICATE_CATEGORY") {
